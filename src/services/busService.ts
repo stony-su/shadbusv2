@@ -13,7 +13,7 @@ import {
   orderBy
 } from 'firebase/firestore';
 import { db } from '../firebase/config';
-import { BusDetails, BusRoute, BusLocation, FoodItem, BusInventory } from '../types';
+import { BusDetails, BusRoute, BusLocation, FoodItem, BusInventory, RoutePath } from '../types';
 
 export interface CreateBusRequest {
   routeId: string;
@@ -25,6 +25,8 @@ export interface CreateRouteRequest {
   name: string;
   description: string;
   culturalFocus: string[];
+  path: RoutePath[];
+  color: string;
 }
 
 export interface UpdateStockRequest {
@@ -134,7 +136,9 @@ class BusService {
         id: '', // Will be set by Firestore
         name: request.name,
         description: request.description,
-        culturalFocus: request.culturalFocus
+        culturalFocus: request.culturalFocus,
+        path: request.path,
+        color: request.color
       };
 
       const docRef = await addDoc(collection(db, 'routes'), routeData);

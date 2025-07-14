@@ -14,7 +14,8 @@ const RouteManagement: React.FC = () => {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
-    culturalFocus: [] as string[]
+    culturalFocus: [] as string[],
+    color: '#3b82f6'
   });
 
   const culturalOptions = [
@@ -44,10 +45,40 @@ const RouteManagement: React.FC = () => {
     setError('');
 
     try {
+      // Create a simple default path for new routes
+      const defaultPath = [
+        { latitude: 51.0447, longitude: -114.0719 },
+        { latitude: 51.0447, longitude: -114.0750 },
+        { latitude: 51.0447, longitude: -114.0800 },
+        { latitude: 51.0447, longitude: -114.0850 },
+        { latitude: 51.0430, longitude: -114.0850 },
+        { latitude: 51.0410, longitude: -114.0850 },
+        { latitude: 51.0390, longitude: -114.0850 },
+        { latitude: 51.0390, longitude: -114.0800 },
+        { latitude: 51.0390, longitude: -114.0750 },
+        { latitude: 51.0390, longitude: -114.0700 },
+        { latitude: 51.0390, longitude: -114.0650 },
+        { latitude: 51.0370, longitude: -114.0650 },
+        { latitude: 51.0350, longitude: -114.0650 },
+        { latitude: 51.0330, longitude: -114.0650 },
+        { latitude: 51.0330, longitude: -114.0700 },
+        { latitude: 51.0330, longitude: -114.0750 },
+        { latitude: 51.0330, longitude: -114.0800 },
+        { latitude: 51.0350, longitude: -114.0800 },
+        { latitude: 51.0370, longitude: -114.0800 },
+        { latitude: 51.0390, longitude: -114.0800 },
+        { latitude: 51.0410, longitude: -114.0800 },
+        { latitude: 51.0430, longitude: -114.0800 },
+        { latitude: 51.0447, longitude: -114.0750 },
+        { latitude: 51.0447, longitude: -114.0719 }
+      ];
+
       const request: CreateRouteRequest = {
         name: formData.name,
         description: formData.description,
-        culturalFocus: formData.culturalFocus
+        culturalFocus: formData.culturalFocus,
+        path: defaultPath,
+        color: formData.color
       };
 
       await busService.createRoute(request);
@@ -55,7 +86,8 @@ const RouteManagement: React.FC = () => {
       setFormData({
         name: '',
         description: '',
-        culturalFocus: []
+        culturalFocus: [],
+        color: '#3b82f6'
       });
       await loadRoutes();
     } catch (error: any) {
@@ -76,7 +108,8 @@ const RouteManagement: React.FC = () => {
       const updates = {
         name: formData.name,
         description: formData.description,
-        culturalFocus: formData.culturalFocus
+        culturalFocus: formData.culturalFocus,
+        color: formData.color
       };
 
       await busService.updateRoute(editingRoute.id, updates);
@@ -84,7 +117,8 @@ const RouteManagement: React.FC = () => {
       setFormData({
         name: '',
         description: '',
-        culturalFocus: []
+        culturalFocus: [],
+        color: '#3b82f6'
       });
       await loadRoutes();
     } catch (error: any) {
@@ -99,7 +133,8 @@ const RouteManagement: React.FC = () => {
     setFormData({
       name: route.name,
       description: route.description,
-      culturalFocus: route.culturalFocus
+      culturalFocus: route.culturalFocus,
+      color: route.color || '#3b82f6'
     });
   };
 
@@ -108,7 +143,8 @@ const RouteManagement: React.FC = () => {
     setFormData({
       name: '',
       description: '',
-      culturalFocus: []
+      culturalFocus: [],
+      color: '#3b82f6'
     });
   };
 
@@ -266,6 +302,21 @@ const RouteManagement: React.FC = () => {
               </div>
             </div>
 
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Route Color
+              </label>
+              <div className="flex items-center gap-2">
+                <input
+                  type="color"
+                  value={formData.color}
+                  onChange={(e) => setFormData({ ...formData, color: e.target.value })}
+                  className="w-12 h-10 border border-gray-300 rounded-md cursor-pointer"
+                />
+                <span className="text-sm text-gray-600">{formData.color}</span>
+              </div>
+            </div>
+
             <div className="flex justify-end space-x-3">
               <button
                 type="button"
@@ -343,6 +394,21 @@ const RouteManagement: React.FC = () => {
                     <span className="text-sm">{culture}</span>
                   </label>
                 ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Route Color
+              </label>
+              <div className="flex items-center gap-2">
+                <input
+                  type="color"
+                  value={formData.color}
+                  onChange={(e) => setFormData({ ...formData, color: e.target.value })}
+                  className="w-12 h-10 border border-gray-300 rounded-md cursor-pointer"
+                />
+                <span className="text-sm text-gray-600">{formData.color}</span>
               </div>
             </div>
 

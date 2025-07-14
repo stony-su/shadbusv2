@@ -25,11 +25,18 @@ export interface BusInventory {
   lastUpdated: Date;
 }
 
+export interface RoutePath {
+  latitude: number;
+  longitude: number;
+}
+
 export interface BusRoute {
   id: string;
   name: string;
   description: string;
   culturalFocus: string[];
+  path: RoutePath[]; // Array of coordinates that define the route path
+  color: string; // Color for displaying the route on the map
 }
 
 export interface BusDetails {

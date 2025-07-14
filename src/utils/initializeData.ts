@@ -8,13 +8,62 @@ export const initializeSampleData = async () => {
     const route1Id = await busService.createRoute({
       name: 'Cultural Food Express',
       description: 'Connecting diverse cultural food markets across Calgary',
-      culturalFocus: ['Asian', 'Mediterranean', 'Middle Eastern', 'Indian']
+      culturalFocus: ['Asian', 'Mediterranean', 'Middle Eastern', 'Indian'],
+      path: [
+        { latitude: 51.0447, longitude: -114.0719 },
+        { latitude: 51.0447, longitude: -114.0750 },
+        { latitude: 51.0447, longitude: -114.0800 },
+        { latitude: 51.0447, longitude: -114.0850 },
+        { latitude: 51.0430, longitude: -114.0850 },
+        { latitude: 51.0410, longitude: -114.0850 },
+        { latitude: 51.0390, longitude: -114.0850 },
+        { latitude: 51.0390, longitude: -114.0800 },
+        { latitude: 51.0390, longitude: -114.0750 },
+        { latitude: 51.0390, longitude: -114.0700 },
+        { latitude: 51.0390, longitude: -114.0650 },
+        { latitude: 51.0370, longitude: -114.0650 },
+        { latitude: 51.0350, longitude: -114.0650 },
+        { latitude: 51.0330, longitude: -114.0650 },
+        { latitude: 51.0330, longitude: -114.0700 },
+        { latitude: 51.0330, longitude: -114.0750 },
+        { latitude: 51.0330, longitude: -114.0800 },
+        { latitude: 51.0350, longitude: -114.0800 },
+        { latitude: 51.0370, longitude: -114.0800 },
+        { latitude: 51.0390, longitude: -114.0800 },
+        { latitude: 51.0410, longitude: -114.0800 },
+        { latitude: 51.0430, longitude: -114.0800 },
+        { latitude: 51.0447, longitude: -114.0750 },
+        { latitude: 51.0447, longitude: -114.0719 }
+      ],
+      color: '#3b82f6'
     });
 
     const route2Id = await busService.createRoute({
       name: 'Downtown Fresh Market',
       description: 'Fresh produce and cultural specialties in downtown Calgary',
-      culturalFocus: ['Local', 'Organic', 'Artisan']
+      culturalFocus: ['Local', 'Organic', 'Artisan'],
+      path: [
+        { latitude: 51.0447, longitude: -114.0719 },
+        { latitude: 51.0467, longitude: -114.0719 },
+        { latitude: 51.0467, longitude: -114.0750 },
+        { latitude: 51.0467, longitude: -114.0800 },
+        { latitude: 51.0487, longitude: -114.0800 },
+        { latitude: 51.0507, longitude: -114.0800 },
+        { latitude: 51.0527, longitude: -114.0800 },
+        { latitude: 51.0527, longitude: -114.0750 },
+        { latitude: 51.0527, longitude: -114.0700 },
+        { latitude: 51.0527, longitude: -114.0650 },
+        { latitude: 51.0527, longitude: -114.0600 },
+        { latitude: 51.0507, longitude: -114.0600 },
+        { latitude: 51.0487, longitude: -114.0600 },
+        { latitude: 51.0467, longitude: -114.0600 },
+        { latitude: 51.0467, longitude: -114.0650 },
+        { latitude: 51.0467, longitude: -114.0700 },
+        { latitude: 51.0467, longitude: -114.0750 },
+        { latitude: 51.0447, longitude: -114.0750 },
+        { latitude: 51.0447, longitude: -114.0719 }
+      ],
+      color: '#10b981'
     });
 
     console.log('Sample routes created:', { route1Id, route2Id });

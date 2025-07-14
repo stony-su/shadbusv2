@@ -1,4 +1,4 @@
-import { BusDetails, BusLocation, BusRoute, FoodItem, BusInventory } from '../types';
+import { BusDetails, BusLocation, BusRoute, FoodItem, BusInventory, RoutePath } from '../types';
 
 // Calgary coordinates
 const CALGARY_CENTER = { lat: 51.0447, lng: -114.0719 };
@@ -13,19 +13,87 @@ const culturalFoods = {
   italian: ['Pasta', 'Pizza', 'Prosciutto', 'Mozzarella', 'Balsamic']
 };
 
+// Route paths following Calgary roads
+const route1Path: RoutePath[] = [
+  // Starting from downtown Calgary
+  { latitude: 51.0447, longitude: -114.0719 },
+  // Following 7th Avenue SW
+  { latitude: 51.0447, longitude: -114.0750 },
+  { latitude: 51.0447, longitude: -114.0800 },
+  { latitude: 51.0447, longitude: -114.0850 },
+  // Turning onto 14th Street SW
+  { latitude: 51.0430, longitude: -114.0850 },
+  { latitude: 51.0410, longitude: -114.0850 },
+  { latitude: 51.0390, longitude: -114.0850 },
+  // Following 17th Avenue SW
+  { latitude: 51.0390, longitude: -114.0800 },
+  { latitude: 51.0390, longitude: -114.0750 },
+  { latitude: 51.0390, longitude: -114.0700 },
+  { latitude: 51.0390, longitude: -114.0650 },
+  // Turning onto Macleod Trail
+  { latitude: 51.0370, longitude: -114.0650 },
+  { latitude: 51.0350, longitude: -114.0650 },
+  { latitude: 51.0330, longitude: -114.0650 },
+  // Following 4th Street SW
+  { latitude: 51.0330, longitude: -114.0700 },
+  { latitude: 51.0330, longitude: -114.0750 },
+  { latitude: 51.0330, longitude: -114.0800 },
+  // Back to downtown
+  { latitude: 51.0350, longitude: -114.0800 },
+  { latitude: 51.0370, longitude: -114.0800 },
+  { latitude: 51.0390, longitude: -114.0800 },
+  { latitude: 51.0410, longitude: -114.0800 },
+  { latitude: 51.0430, longitude: -114.0800 },
+  { latitude: 51.0447, longitude: -114.0750 },
+  { latitude: 51.0447, longitude: -114.0719 }
+];
+
+const route2Path: RoutePath[] = [
+  // Starting from downtown Calgary
+  { latitude: 51.0447, longitude: -114.0719 },
+  // Following 8th Avenue SW
+  { latitude: 51.0467, longitude: -114.0719 },
+  { latitude: 51.0467, longitude: -114.0750 },
+  { latitude: 51.0467, longitude: -114.0800 },
+  // Following 11th Street SW
+  { latitude: 51.0487, longitude: -114.0800 },
+  { latitude: 51.0507, longitude: -114.0800 },
+  { latitude: 51.0527, longitude: -114.0800 },
+  // Following 16th Avenue NW
+  { latitude: 51.0527, longitude: -114.0750 },
+  { latitude: 51.0527, longitude: -114.0700 },
+  { latitude: 51.0527, longitude: -114.0650 },
+  { latitude: 51.0527, longitude: -114.0600 },
+  // Following 19th Street NW
+  { latitude: 51.0507, longitude: -114.0600 },
+  { latitude: 51.0487, longitude: -114.0600 },
+  { latitude: 51.0467, longitude: -114.0600 },
+  // Following 12th Avenue NW
+  { latitude: 51.0467, longitude: -114.0650 },
+  { latitude: 51.0467, longitude: -114.0700 },
+  { latitude: 51.0467, longitude: -114.0750 },
+  // Back to downtown
+  { latitude: 51.0447, longitude: -114.0750 },
+  { latitude: 51.0447, longitude: -114.0719 }
+];
+
 // Sample bus routes
 export const busRoutes: BusRoute[] = [
   {
     id: 'route-1',
     name: 'Cultural Food Express',
     description: 'Connecting diverse cultural food markets across Calgary',
-    culturalFocus: ['Asian', 'Mediterranean', 'Middle Eastern', 'Indian']
+    culturalFocus: ['Asian', 'Mediterranean', 'Middle Eastern', 'Indian'],
+    path: route1Path,
+    color: '#3b82f6' // Blue
   },
   {
     id: 'route-2',
     name: 'Downtown Fresh Market',
     description: 'Fresh produce and cultural specialties in downtown Calgary',
-    culturalFocus: ['Local', 'Organic', 'Artisan']
+    culturalFocus: ['Local', 'Organic', 'Artisan'],
+    path: route2Path,
+    color: '#10b981' // Green
   }
 ];
 
