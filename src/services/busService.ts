@@ -343,6 +343,56 @@ class BusService {
       throw error;
     }
   }
+
+  // Remove duplicate routes
+  async removeDuplicateRoutes(): Promise<void> {
+    try {
+      console.log('Starting to remove duplicate routes...');
+      
+      const routesSnapshot = await getDocs(collection(db, 'routes'));
+      const routes = routesSnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      })) as BusRoute[];
+      
+      // Group routes by name
+      const routesByName = new Map<string, BusRoute[]>();
+      routes.forEach(route => {
+        if (!routesByName.has(route.name)) {
+          routesByName.set(route.name, []);
+        }
+        routesByName.get(route.name)!.push(route);
+      });
+      
+      // Find and delete duplicates
+      let deletedCount = 0;
+      const deletePromises: Promise<void>[] = [];
+      
+      routesByName.forEach((routeList, name) => {
+        if (routeList.length > 1) {
+          console.log(`Found ${routeList.length} routes with name "${name}"`);
+          
+          // Keep the first one, delete the rest
+          const routesToDelete = routeList.slice(1);
+          const routeDeletePromises = routesToDelete.map((route: BusRoute) => deleteDoc(doc(db, 'routes', route.id)));
+          deletePromises.push(...routeDeletePromises);
+          deletedCount += routesToDelete.length;
+          console.log(`Queued ${routesToDelete.length} duplicate routes for deletion: "${name}"`);
+        }
+      });
+      
+      // Wait for all deletions to complete
+      if (deletePromises.length > 0) {
+        await Promise.all(deletePromises);
+        console.log(`Removed ${deletedCount} duplicate routes successfully!`);
+      } else {
+        console.log('No duplicate routes found.');
+      }
+    } catch (error) {
+      console.error('Error removing duplicate routes:', error);
+      throw error;
+    }
+  }
 }
 
 export const busService = new BusService(); 

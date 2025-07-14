@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { authService } from '../../services/authService';
-import { LogOut, Settings, Truck, Map, Package, Users } from 'lucide-react';
+import { busService } from '../../services/busService';
+import { LogOut, Settings, Truck, Map, Package, Users, Database } from 'lucide-react';
 import BusManagement from './BusManagement';
 import RouteManagement from './RouteManagement';
 import StockManagement from './StockManagement';
 
-type DashboardTab = 'buses' | 'routes' | 'stock';
+type DashboardTab = 'buses' | 'routes' | 'stock' | 'utilities';
 
 const AdminDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<DashboardTab>('buses');
@@ -58,9 +59,101 @@ const AdminDashboard: React.FC = () => {
         return <RouteManagement />;
       case 'stock':
         return <StockManagement />;
+      case 'utilities':
+        return <UtilitiesTab />;
       default:
         return <BusManagement />;
     }
+  };
+
+  const UtilitiesTab: React.FC = () => {
+    const [loading, setLoading] = useState(false);
+    const [message, setMessage] = useState('');
+
+    const handleRemoveDuplicates = async () => {
+      if (!window.confirm('Are you sure you want to remove duplicate routes? This action cannot be undone.')) {
+        return;
+      }
+
+      setLoading(true);
+      setMessage('');
+      
+      try {
+        await busService.removeDuplicateRoutes();
+        setMessage('Duplicate routes removed successfully!');
+      } catch (error: any) {
+        setMessage(`Error: ${error.message}`);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const handleWipeAllData = async () => {
+      if (!window.confirm('Are you sure you want to wipe ALL data? This action cannot be undone.')) {
+        return;
+      }
+
+      setLoading(true);
+      setMessage('');
+      
+      try {
+        await busService.wipeAllData();
+        setMessage('All data wiped successfully!');
+      } catch (error: any) {
+        setMessage(`Error: ${error.message}`);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    return (
+      <div className="space-y-6">
+        <div className="flex justify-between items-center">
+          <h2 className="text-2xl font-bold text-gray-900">Database Utilities</h2>
+        </div>
+
+        {message && (
+          <div className={`p-4 rounded-md ${
+            message.includes('Error') ? 'bg-red-50 border border-red-200 text-red-700' : 'bg-green-50 border border-green-200 text-green-700'
+          }`}>
+            {message}
+          </div>
+        )}
+
+        <div className="bg-white rounded-lg shadow p-6">
+          <h3 className="text-lg font-medium text-gray-900 mb-4">Data Management</h3>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+              <div>
+                <h4 className="font-medium text-gray-900">Remove Duplicate Routes</h4>
+                <p className="text-sm text-gray-600">Clean up duplicate routes in the database</p>
+              </div>
+              <button
+                onClick={handleRemoveDuplicates}
+                disabled={loading}
+                className="px-4 py-2 bg-yellow-600 text-white rounded-md hover:bg-yellow-700 disabled:opacity-50"
+              >
+                {loading ? 'Processing...' : 'Remove Duplicates'}
+              </button>
+            </div>
+
+            <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+              <div>
+                <h4 className="font-medium text-gray-900">Wipe All Data</h4>
+                <p className="text-sm text-gray-600">Delete all buses, routes, and stock data</p>
+              </div>
+              <button
+                onClick={handleWipeAllData}
+                disabled={loading}
+                className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 disabled:opacity-50"
+              >
+                {loading ? 'Processing...' : 'Wipe All Data'}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -131,6 +224,19 @@ const AdminDashboard: React.FC = () => {
               <div className="flex items-center">
                 <Package className="w-4 h-4 mr-2" />
                 Stock Management
+              </div>
+            </button>
+            <button
+              onClick={() => setActiveTab('utilities')}
+              className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                activeTab === 'utilities'
+                  ? 'border-blue-500 text-blue-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+            >
+              <div className="flex items-center">
+                <Database className="w-4 h-4 mr-2" />
+                Utilities
               </div>
             </button>
           </nav>

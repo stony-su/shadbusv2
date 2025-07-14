@@ -76,7 +76,7 @@ const Map: React.FC<MapProps> = ({ className = '' }) => {
         } else if (bus.status === 'offline') {
           speed = 0; // No movement for offline buses
         } else {
-          speed = 0.0001 + (Math.random() * 0.0001); // Random speed for others
+          speed = 0.00001 + (Math.random() * 0.0003); // Random speed for others
         }
         
         newMovementState[bus.id] = {
