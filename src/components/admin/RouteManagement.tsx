@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { busService, CreateRouteRequest } from '../../services/busService';
 import { BusRoute } from '../../types';
 import { Plus, Map, Trash2, Edit, Save, X } from 'lucide-react';
+import RouteCreator from './RouteCreator';
 
 const RouteManagement: React.FC = () => {
   const [routes, setRoutes] = useState<BusRoute[]>([]);
   const [showCreateForm, setShowCreateForm] = useState(false);
+  const [showRouteCreator, setShowRouteCreator] = useState(false);
   const [editingRoute, setEditingRoute] = useState<BusRoute | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -170,6 +172,39 @@ const RouteManagement: React.FC = () => {
     });
   };
 
+  const handleRouteCreatorSave = async (routeData: {
+    name: string;
+    description: string;
+    culturalFocus: string[];
+    path: any[];
+    color: string;
+  }) => {
+    setLoading(true);
+    setError('');
+
+    try {
+      const request: CreateRouteRequest = {
+        name: routeData.name,
+        description: routeData.description,
+        culturalFocus: routeData.culturalFocus,
+        path: routeData.path,
+        color: routeData.color
+      };
+
+      await busService.createRoute(request);
+      setShowRouteCreator(false);
+      await loadRoutes();
+    } catch (error: any) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleRouteCreatorCancel = () => {
+    setShowRouteCreator(false);
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -186,13 +221,15 @@ const RouteManagement: React.FC = () => {
           <h1 className="text-2xl font-bold text-gray-900">Route Management</h1>
           <p className="text-gray-600">Manage bus routes and their cultural focus</p>
         </div>
-        <button
-          onClick={() => setShowCreateForm(true)}
-          className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-        >
-          <Plus className="w-5 h-5" />
-          Create Route
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={() => setShowRouteCreator(true)}
+            className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            <Plus className="w-5 h-5" />
+            Create Route with Map
+          </button>
+        </div>
       </div>
 
       {/* Error Display */}
@@ -430,6 +467,14 @@ const RouteManagement: React.FC = () => {
             </div>
           </form>
         </div>
+      )}
+
+      {/* Route Creator Modal */}
+      {showRouteCreator && (
+        <RouteCreator
+          onSave={handleRouteCreatorSave}
+          onCancel={handleRouteCreatorCancel}
+        />
       )}
     </div>
   );
