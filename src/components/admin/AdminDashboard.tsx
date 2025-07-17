@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { authService } from '../../services/authService';
 import { busService } from '../../services/busService';
-import { LogOut, Settings, Truck, Map, Package, Users, Database } from 'lucide-react';
+import { LogOut, Truck, Map, Package, Database } from 'lucide-react';
 import BusManagement from './BusManagement';
 import RouteManagement from './RouteManagement';
 import StockManagement from './StockManagement';
@@ -71,7 +71,7 @@ const AdminDashboard: React.FC = () => {
     const [message, setMessage] = useState('');
 
     const handleRemoveDuplicates = async () => {
-      if (!window.confirm('Are you sure you want to remove duplicate routes? This action cannot be undone.')) {
+      if (!globalThis.confirm('Are you sure you want to remove duplicate routes? This action cannot be undone.')) {
         return;
       }
 
@@ -81,15 +81,15 @@ const AdminDashboard: React.FC = () => {
       try {
         await busService.removeDuplicateRoutes();
         setMessage('Duplicate routes removed successfully!');
-      } catch (error: any) {
-        setMessage(`Error: ${error.message}`);
+      } catch (error: unknown) {
+        setMessage(`Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
       } finally {
         setLoading(false);
       }
     };
 
     const handleWipeAllData = async () => {
-      if (!window.confirm('Are you sure you want to wipe ALL data? This action cannot be undone.')) {
+      if (!globalThis.confirm('Are you sure you want to wipe ALL data? This action cannot be undone.')) {
         return;
       }
 
@@ -99,8 +99,8 @@ const AdminDashboard: React.FC = () => {
       try {
         await busService.wipeAllData();
         setMessage('All data wiped successfully!');
-      } catch (error: any) {
-        setMessage(`Error: ${error.message}`);
+      } catch (error: unknown) {
+        setMessage(`Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
       } finally {
         setLoading(false);
       }

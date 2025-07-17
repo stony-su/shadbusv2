@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { busService, UpdateStockRequest } from '../../services/busService';
 import { BusDetails, FoodItem } from '../../types';
-import { Package, Plus, Edit, Trash2, ShoppingCart } from 'lucide-react';
+import { Plus, Trash2 } from 'lucide-react';
 
 const StockManagement: React.FC = () => {
   const [buses, setBuses] = useState<BusDetails[]>([]);
@@ -37,8 +37,8 @@ const StockManagement: React.FC = () => {
       setLoading(true);
       const busesData = await busService.getAllBuses();
       setBuses(busesData);
-    } catch (error: any) {
-      setError(error.message);
+    } catch (error: unknown) {
+      setError(error as string);
     } finally {
       setLoading(false);
     }
@@ -65,8 +65,8 @@ const StockManagement: React.FC = () => {
         inStock: true
       });
       await loadBuses();
-    } catch (error: any) {
-      setError(error.message);
+    } catch (error: unknown) {
+      setError(error as string);
     } finally {
       setLoading(false);
     }
@@ -85,13 +85,13 @@ const StockManagement: React.FC = () => {
 
       await busService.updateBusStock(request);
       await loadBuses();
-    } catch (error: any) {
-      setError(error.message);
+    } catch (error: unknown) {
+      setError(error as string);
     }
   };
 
   const handleDeleteItem = async (busId: string, itemId: string) => {
-    if (!window.confirm('Are you sure you want to delete this item?')) {
+    if (!globalThis.confirm('Are you sure you want to delete this item?')) {
       return;
     }
 
@@ -112,8 +112,8 @@ const StockManagement: React.FC = () => {
 
       await busService.updateBusStock(request);
       await loadBuses();
-    } catch (error: any) {
-      setError(error.message);
+    } catch (error: unknown) {
+      setError(error as string);
     }
   };
 
