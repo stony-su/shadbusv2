@@ -54,4 +54,16 @@ export interface MapBounds {
   south: number;
   east: number;
   west: number;
+}
+
+export interface Hub {
+  id: string;
+  name: string;
+  location: {
+    latitude: number;
+    longitude: number;
+  };
+  stock: FoodItem[];
+  openTime: string; // e.g. '09:00'
+  closeTime: string; // e.g. '17:00'
 } 

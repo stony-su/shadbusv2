@@ -19,6 +19,7 @@ export interface CreateBusRequest {
   routeId: string;
   driver: string;
   status?: 'active' | 'maintenance' | 'offline';
+  initialLocation?: { latitude: number; longitude: number; heading?: number };
 }
 
 export interface CreateRouteRequest {
@@ -51,13 +52,23 @@ class BusService {
       const route = routeDoc.data() as BusRoute;
 
       // Create initial location
+      let latitude: number, longitude: number, heading: number;
+      if (request.initialLocation) {
+        latitude = request.initialLocation.latitude;
+        longitude = request.initialLocation.longitude;
+        heading = request.initialLocation.heading ?? Math.floor(Math.random() * 360);
+      } else {
+        latitude = 51.0447 + (Math.random() - 0.5) * 0.01;
+        longitude = -114.0719 + (Math.random() - 0.5) * 0.01;
+        heading = Math.floor(Math.random() * 360);
+      }
       const location: BusLocation = {
         id: '', // Will be set by Firestore
-        latitude: 51.0447 + (Math.random() - 0.5) * 0.01, // Random position around Calgary
-        longitude: -114.0719 + (Math.random() - 0.5) * 0.01,
+        latitude,
+        longitude,
         estimatedArrival: Math.floor(Math.random() * 30) + 5,
         currentSpeed: Math.floor(Math.random() * 20) + 30,
-        heading: Math.floor(Math.random() * 360)
+        heading
       };
 
       // Create initial inventory
@@ -116,6 +127,28 @@ class BusService {
       });
     } catch (error) {
       console.error('Error updating bus status:', error);
+      throw error;
+    }
+  }
+
+  async updateBus(busId: string, updates: { routeId?: string; driver?: string }): Promise<void> {
+    try {
+      const busRef = doc(db, 'buses', busId);
+      const updateData: any = { lastUpdate: new Date() };
+      if (updates.driver !== undefined) {
+        updateData.driver = updates.driver;
+      }
+      if (updates.routeId !== undefined) {
+        // Fetch the new route object
+        const routeDoc = await getDoc(doc(db, 'routes', updates.routeId));
+        if (!routeDoc.exists()) {
+          throw new Error('Route not found');
+        }
+        updateData.route = routeDoc.data();
+      }
+      await updateDoc(busRef, updateData);
+    } catch (error) {
+      console.error('Error updating bus:', error);
       throw error;
     }
   }

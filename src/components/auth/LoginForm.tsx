@@ -110,28 +110,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
           </div>
 
           <div className="text-center space-y-2">
-            <button
-              type="button"
-              onClick={onSwitchToSignup}
-              className="text-sm text-blue-600 hover:text-blue-500"
-            >
-              Don't have an account? Sign up
-            </button>
-            
-            {/* Temporary test mode button */}
-            <div className="pt-4 border-t border-gray-200">
-              <button
-                type="button"
-                onClick={handleTestMode}
-                className="flex items-center justify-center w-full px-4 py-2 text-sm text-orange-600 bg-orange-50 border border-orange-200 rounded-md hover:bg-orange-100"
-              >
-                <AlertTriangle className="w-4 h-4 mr-2" />
-                Test Mode (Skip Auth)
-              </button>
-              <p className="text-xs text-gray-500 mt-1">
-                Use this if Firebase Auth is not enabled yet
-              </p>
-            </div>
+            {/* Removed 'Don't have an account? Sign up' button and Test Mode button as per request */}
           </div>
         </form>
       </div>

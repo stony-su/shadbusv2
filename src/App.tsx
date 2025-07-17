@@ -6,71 +6,59 @@ import LoginForm from './components/auth/LoginForm';
 import SignupForm from './components/auth/SignupForm';
 import { initializeSampleData } from './utils/initializeData';
 import { busService } from './services/busService';
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 
 type AppView = 'map' | 'admin' | 'login' | 'signup';
 
-const App: React.FC = () => {
+// CustomerApp: Map only, no admin buttons
+const CustomerApp: React.FC = () => {
+  const navigate = useNavigate();
+  return (
+    <div className="App">
+      <div className="relative">
+        <Map onTripleClick={() => navigate('/admin')} />
+      </div>
+    </div>
+  );
+};
+
+// AdminApp: full admin logic
+const AdminApp: React.FC = () => {
   const [currentView, setCurrentView] = useState<AppView>('map');
   const [authState, setAuthState] = useState(authService.getCurrentUser());
 
   useEffect(() => {
-    // Check for test mode
     const testMode = localStorage.getItem('testMode') === 'true';
-    
     if (testMode) {
       setCurrentView('admin');
       return;
     }
-
     const unsubscribe = authService.subscribe((state) => {
       setAuthState(state.user);
-      
-      // If user is authenticated, switch to admin view (regardless of current view)
       if (state.user) {
         setCurrentView('admin');
       }
-      
-      // If user logs out, always go back to map view
       if (!state.user && currentView === 'admin') {
         setCurrentView('map');
       }
     });
-
-    // Make initializeSampleData available globally for testing
     (window as any).initializeSampleData = initializeSampleData;
-    
-    // Also expose it immediately for console access
     if (typeof window !== 'undefined') {
       (window as any).initializeSampleData = initializeSampleData;
-      console.log('initializeSampleData is now available in console');
-      
-      // Add function to clear test mode for debugging
       (window as any).clearTestMode = () => {
         localStorage.removeItem('testMode');
         window.location.reload();
       };
-      console.log('clearTestMode() is now available in console');
-      
-      // Auto-initialize sample data if no buses exist (for development)
       const autoInit = async () => {
         try {
           const buses = await busService.getAllBuses();
           if (buses.length === 0) {
-            console.log('No buses found, auto-initializing sample data...');
             await initializeSampleData();
-            console.log('Sample data auto-initialized successfully!');
-          } else {
-            console.log(`Found ${buses.length} existing buses`);
           }
-        } catch (error) {
-          console.error('Error checking/initializing sample data:', error);
-        }
+        } catch (error) {}
       };
-      
-      // Run auto-init after a short delay to ensure Firebase is ready
       setTimeout(autoInit, 1000);
     }
-
     return unsubscribe;
   }, [currentView]);
 
@@ -95,16 +83,12 @@ const App: React.FC = () => {
               >
                 Admin Login
               </button>
-              {/* Development button for initializing sample data */}
               <button
                 onClick={async () => {
                   try {
-                    console.log('Initializing sample data...');
                     await initializeSampleData();
-                    console.log('Sample data initialized successfully!');
                     alert('Sample data initialized successfully!');
                   } catch (error) {
-                    console.error('Error initializing sample data:', error);
                     alert('Error initializing sample data. Check console for details.');
                   }
                 }}
@@ -112,19 +96,14 @@ const App: React.FC = () => {
               >
                 Initialize Sample Data
               </button>
-              {/* Development button for wiping all data */}
               <button
                 onClick={async () => {
                   try {
                     const confirmed = window.confirm('Are you sure you want to wipe ALL data? This action cannot be undone.');
                     if (!confirmed) return;
-                    
-                    console.log('Wiping all data...');
                     await busService.wipeAllData();
-                    console.log('All data wiped successfully!');
                     alert('All data wiped successfully!');
                   } catch (error) {
-                    console.error('Error wiping all data:', error);
                     alert('Error wiping all data. Check console for details.');
                   }
                 }}
@@ -138,10 +117,21 @@ const App: React.FC = () => {
     }
   };
 
+  return <div className="App">{renderView()}</div>;
+};
+
+// Main App with routing
+const App: React.FC = () => {
   return (
-    <div className="App">
-      {renderView()}
-    </div>
+    <>
+      <div id="google_translate_element" style={{ position: 'fixed', bottom: 10, right: 10, zIndex: 2000 }}></div>
+      <Router>
+        <Routes>
+          <Route path="/admin/*" element={<AdminApp />} />
+          <Route path="/*" element={<CustomerApp />} />
+        </Routes>
+      </Router>
+    </>
   );
 };
 

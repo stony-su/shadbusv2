@@ -9,6 +9,8 @@ const BusManagement: React.FC = () => {
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [editingBusId, setEditingBusId] = useState<string | null>(null);
+  const [editFormData, setEditFormData] = useState({ routeId: '', driver: '' });
 
   // Form state
   const [formData, setFormData] = useState({
@@ -205,10 +207,32 @@ const BusManagement: React.FC = () => {
                     {bus.id}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {bus.route.name}
+                    {editingBusId === bus.id ? (
+                      <select
+                        value={editFormData.routeId}
+                        onChange={e => setEditFormData({ ...editFormData, routeId: e.target.value })}
+                        className="w-full px-2 py-1 border border-gray-300 rounded-md"
+                      >
+                        <option value="">Select a route</option>
+                        {routes.map(route => (
+                          <option key={route.id} value={route.id}>{route.name}</option>
+                        ))}
+                      </select>
+                    ) : (
+                      bus.route.name
+                    )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {bus.driver}
+                    {editingBusId === bus.id ? (
+                      <input
+                        type="text"
+                        value={editFormData.driver}
+                        onChange={e => setEditFormData({ ...editFormData, driver: e.target.value })}
+                        className="w-full px-2 py-1 border border-gray-300 rounded-md"
+                      />
+                    ) : (
+                      bus.driver
+                    )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <select
@@ -225,13 +249,56 @@ const BusManagement: React.FC = () => {
                     {bus.location.latitude.toFixed(4)}, {bus.location.longitude.toFixed(4)}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <button
-                      onClick={() => handleDeleteBus(bus.id)}
-                      className="text-red-600 hover:text-red-900"
-                      title="Delete bus"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
+                    {editingBusId === bus.id ? (
+                      <>
+                        <button
+                          onClick={async () => {
+                            setLoading(true);
+                            setError('');
+                            try {
+                              await busService.updateBus(bus.id, { routeId: editFormData.routeId, driver: editFormData.driver });
+                              setEditingBusId(null);
+                              await loadData();
+                            } catch (error: any) {
+                              setError(error.message);
+                            } finally {
+                              setLoading(false);
+                            }
+                          }}
+                          className="text-green-600 hover:text-green-900 mr-2"
+                          title="Save"
+                        >
+                          Save
+                        </button>
+                        <button
+                          onClick={() => setEditingBusId(null)}
+                          className="text-gray-600 hover:text-gray-900"
+                          title="Cancel"
+                        >
+                          Cancel
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <button
+                          onClick={() => {
+                            setEditingBusId(bus.id);
+                            setEditFormData({ routeId: bus.route.id, driver: bus.driver });
+                          }}
+                          className="text-blue-600 hover:text-blue-900 mr-2"
+                          title="Edit bus"
+                        >
+                          <Edit className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteBus(bus.id)}
+                          className="text-red-600 hover:text-red-900"
+                          title="Delete bus"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </>
+                    )}
                   </td>
                 </tr>
               ))}

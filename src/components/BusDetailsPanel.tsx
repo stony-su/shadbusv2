@@ -132,7 +132,7 @@ const BusDetailsPanel: React.FC<BusDetailsPanelProps> = ({ bus, onClose }) => {
             <span className="text-red-600 font-medium">{outOfStockItems.length}</span>
           </div>
           <div className="text-xs text-gray-500 mt-2">
-            Last updated: {new Date(bus.inventory.lastUpdated).toLocaleTimeString()}
+            {/* Last updated: {new Date(bus.inventory.lastUpdated).toLocaleTimeString()} */}
           </div>
         </div>
       </div>
@@ -179,9 +179,9 @@ const BusDetailsPanel: React.FC<BusDetailsPanelProps> = ({ bus, onClose }) => {
       )}
 
       {/* Last Update */}
-      <div className="text-xs text-gray-500 text-center pt-4 border-t border-gray-200">
+      {/* <div className="text-xs text-gray-500 text-center pt-4 border-t border-gray-200">
         Last updated: {new Date(bus.lastUpdate).toLocaleString()}
-      </div>
+      </div> */}
     </div>
   );
 };

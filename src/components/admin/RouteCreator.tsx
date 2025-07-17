@@ -323,7 +323,7 @@ const RouteCreator: React.FC<RouteCreatorProps> = ({ onSave, onCancel }) => {
               {waypoints.length === 0 ? (
                 <p className="text-gray-500 text-sm">No waypoints placed yet. Click on the map to add waypoints.</p>
               ) : (
-                <div className="space-y-2">
+                <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
                   {waypoints.map((waypoint, index) => (
                     <div key={index} className="flex items-center justify-between bg-white p-3 rounded-lg border">
                       <div>

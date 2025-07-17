@@ -1,4 +1,4 @@
-import { BusDetails, BusLocation, BusRoute, FoodItem, BusInventory, RoutePath } from '../types';
+import { BusDetails, BusLocation, BusRoute, FoodItem, BusInventory, RoutePath, Hub } from '../types';
 
 // Calgary coordinates
 const CALGARY_CENTER = { lat: 51.0447, lng: -114.0719 };
@@ -185,3 +185,39 @@ export const updateBusLocations = (buses: BusDetails[]): BusDetails[] => {
     lastUpdate: new Date()
   }));
 }; 
+
+export const mockHubs: Hub[] = [
+  {
+    id: 'hub-1',
+    name: 'North Community Center Shop',
+    location: { latitude: 51.0600, longitude: -114.0700 },
+    stock: [
+      { id: 'h1-1', name: 'Canned Soup', category: 'cultural', quantity: 40, unit: 'cans', price: 2.99, inStock: true },
+      { id: 'h1-2', name: 'Bread Loaf', category: 'grains', quantity: 20, unit: 'loaves', price: 3.49, inStock: true }
+    ],
+    openTime: '09:00',
+    closeTime: '17:00'
+  },
+  {
+    id: 'hub-2',
+    name: 'South Community Center Shop',
+    location: { latitude: 51.0300, longitude: -114.0710 },
+    stock: [
+      { id: 'h2-1', name: 'Milk', category: 'dairy', quantity: 30, unit: 'liters', price: 4.29, inStock: true },
+      { id: 'h2-2', name: 'Eggs', category: 'cultural', quantity: 50, unit: 'dozen', price: 3.99, inStock: true }
+    ],
+    openTime: '10:00',
+    closeTime: '18:00'
+  },
+  {
+    id: 'hub-3',
+    name: 'East Community Center Shop',
+    location: { latitude: 51.0450, longitude: -114.0500 },
+    stock: [
+      { id: 'h3-1', name: 'Rice', category: 'grains', quantity: 100, unit: 'kg', price: 1.99, inStock: true },
+      { id: 'h3-2', name: 'Beans', category: 'cultural', quantity: 60, unit: 'kg', price: 2.49, inStock: true }
+    ],
+    openTime: '08:30',
+    closeTime: '16:30'
+  }
+]; 
