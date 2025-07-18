@@ -17,7 +17,6 @@ import BusDetailsPanel from './BusDetailsPanel';
 import BusTracker from './BusTracker';
 import { mockHubs } from '../services/mockData';
 import HubDetailsPanel from './HubDetailsPanel';
-import type MapBrowserEvent from 'ol/MapBrowserEvent';
 
 // For triple-click admin access
 declare global {
@@ -380,7 +379,7 @@ const Map: React.FC<MapProps> = ({ className = '', onTripleClick }) => {
     mapRef.current = map;
 
     // Click handler for selecting bus or hub
-    const clickHandler = (evt: MapBrowserEvent<UIEvent>) => {
+    const clickHandler = (evt: any) => {
       let found = false;
       map.forEachFeatureAtPixel(evt.pixel, (feature) => {
         const busId = feature.get('busId');
