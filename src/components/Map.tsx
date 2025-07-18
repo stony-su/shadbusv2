@@ -261,7 +261,10 @@ const Map: React.FC<MapProps> = ({ className = '', onTripleClick }) => {
   }, [filteredBuses]);
 
   useEffect(() => {
-    if (!mapElement.current) return;
+    if (!mapElement.current) {
+      console.warn('Map element ref is not set. Map will not be initialized.');
+      return;
+    }
 
     // Vector source for bus markers
     const vectorSource = new VectorSource({});
@@ -376,9 +379,9 @@ const Map: React.FC<MapProps> = ({ className = '', onTripleClick }) => {
     mapRef.current = map;
 
     // Click handler for selecting bus or hub
-    const clickHandler = (evt: unknown) => {
+    const clickHandler = (evt: any) => {
       let found = false;
-      map.forEachFeatureAtPixel(evt as any, (feature) => {
+      map.forEachFeatureAtPixel(evt.pixel, (feature) => {
         const busId = feature.get('busId');
         if (busId) {
           const bus = buses.find(b => b.id === busId);
