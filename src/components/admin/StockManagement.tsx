@@ -5,6 +5,7 @@ import { Plus, Trash2 } from 'lucide-react';
 
 const StockManagement: React.FC = () => {
   const [buses, setBuses] = useState<BusDetails[]>([]);
+  void buses;
   const [selectedBus, setSelectedBus] = useState<BusDetails | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');

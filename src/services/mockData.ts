@@ -12,6 +12,7 @@ const _culturalFoods = {
   mexican: ['Tacos', 'Guacamole', 'Queso', 'Tortillas', 'Salsa'],
   italian: ['Pasta', 'Pizza', 'Prosciutto', 'Mozzarella', 'Balsamic']
 };
+void _culturalFoods;
 
 // Route paths following Calgary roads
 const route1Path: RoutePath[] = [

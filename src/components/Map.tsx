@@ -85,6 +85,8 @@ const Map: React.FC<MapProps> = ({ className = '', onTripleClick }) => {
   const routeSourceRef = useRef<VectorSource | null>(null);
   const [buses, setBuses] = useState<BusDetails[]>([]);
   const [routes, setRoutes] = useState<BusRoute[]>([]);
+  void buses;
+  void routes;
   const [selectedBus, setSelectedBus] = useState<BusDetails | null>(null);
   const [busMovementState, setBusMovementState] = useState<BusMovementState>({});
   const animationRef = useRef<number>();

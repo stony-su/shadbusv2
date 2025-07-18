@@ -5,6 +5,7 @@ import { Plus, Trash2, Edit } from 'lucide-react';
 
 const BusManagement: React.FC = () => {
   const [buses, setBuses] = useState<BusDetails[]>([]);
+  void buses;
   const [routes, setRoutes] = useState<BusRoute[]>([]);
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [loading, setLoading] = useState(false);
