@@ -1,5 +1,5 @@
+import { assertEquals } from "https://deno.land/std@0.203.0/assert/mod.ts";
+
 Deno.test("simple test", () => {
-  if (1 + 1 !== 2) {
-    throw new Error("Math is broken!");
-  }
+  assertEquals(1 + 1, 2);
 }); 
