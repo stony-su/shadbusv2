@@ -35,6 +35,8 @@ jobs:
 
       - name: Build step
         run: "npm run build"
+        env:
+          CI: false
 
       - name: Upload to Deno Deploy
         uses: denoland/deployctl@v1
