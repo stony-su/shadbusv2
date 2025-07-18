@@ -8,6 +8,13 @@ import { initializeSampleData } from './utils/initializeData';
 import { busService } from './services/busService';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 
+declare global {
+  interface Window {
+    initializeSampleData: typeof initializeSampleData;
+    clearTestMode: () => void;
+  }
+}
+
 type AppView = 'map' | 'admin' | 'login' | 'signup';
 
 // CustomerApp: Map only, no admin buttons
@@ -42,10 +49,10 @@ const AdminApp: React.FC = () => {
         setCurrentView('map');
       }
     });
-    (window as any).initializeSampleData = initializeSampleData;
+    window.initializeSampleData = initializeSampleData;
     if (typeof window !== 'undefined') {
-      (window as any).initializeSampleData = initializeSampleData;
-      (window as any).clearTestMode = () => {
+      window.initializeSampleData = initializeSampleData;
+      window.clearTestMode = () => {
         localStorage.removeItem('testMode');
         window.location.reload();
       };
@@ -55,7 +62,8 @@ const AdminApp: React.FC = () => {
           if (buses.length === 0) {
             await initializeSampleData();
           }
-        } catch (_error: unknown) {}
+        } catch (_error: unknown) {
+          console.error('Error initializing sample data:', _error);
       };
       setTimeout(autoInit, 1000);
     }
@@ -99,7 +107,7 @@ const AdminApp: React.FC = () => {
               <button
                 onClick={async () => {
                   try {
-                    const confirmed = window.confirm('Are you sure you want to wipe ALL data? This action cannot be undone.');
+                    const confirmed = globalThis.confirm('Are you sure you want to wipe ALL data? This action cannot be undone.');
                     if (!confirmed) return;
                     await busService.wipeAllData();
                     alert('All data wiped successfully!');

@@ -91,7 +91,7 @@ const StockManagement: React.FC = () => {
   };
 
   const handleDeleteItem = async (busId: string, itemId: string) => {
-    if (!window.confirm('Are you sure you want to delete this item?')) {
+    if (!globalThis.confirm('Are you sure you want to delete this item?')) {
       return;
     }
 

@@ -71,7 +71,7 @@ const AdminDashboard: React.FC = () => {
     const [message, setMessage] = useState('');
 
     const handleRemoveDuplicates = async () => {
-      if (!window.confirm('Are you sure you want to remove duplicate routes? This action cannot be undone.')) {
+      if (!globalThis.confirm('Are you sure you want to remove duplicate routes? This action cannot be undone.')) {
         return;
       }
 
@@ -89,7 +89,7 @@ const AdminDashboard: React.FC = () => {
     };
 
     const handleWipeAllData = async () => {
-      if (!window.confirm('Are you sure you want to wipe ALL data? This action cannot be undone.')) {
+      if (!globalThis.confirm('Are you sure you want to wipe ALL data? This action cannot be undone.')) {
         return;
       }
 

@@ -151,7 +151,7 @@ const RouteManagement: React.FC = () => {
   };
 
   const handleDeleteRoute = async (routeId: string) => {
-    if (!window.confirm('Are you sure you want to delete this route?')) {
+    if (!globalThis.confirm('Are you sure you want to delete this route?')) {
       return;
     }
 

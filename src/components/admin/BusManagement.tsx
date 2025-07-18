@@ -64,7 +64,7 @@ const BusManagement: React.FC = () => {
   };
 
   const handleDeleteBus = async (busId: string) => {
-    if (!window.confirm('Are you sure you want to delete this bus?')) {
+    if (!globalThis.confirm('Are you sure you want to delete this bus?')) {
       return;
     }
 

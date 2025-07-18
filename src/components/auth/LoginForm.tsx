@@ -21,6 +21,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
     try {
       await authService.signIn(email, password);
     } catch (_error: any) {
+      setError('Invalid email or password');
     } finally {
       setLoading(false);
     }
