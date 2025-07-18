@@ -100,7 +100,7 @@ const Map: React.FC<MapProps> = ({ className = '', onTripleClick }) => {
         const routesData = await busService.getAllRoutes();
         console.log('Routes loaded:', routesData);
         setRoutes(routesData);
-      } catch (_error: unknown) {
+      } catch (error) {
         console.error('Error loading routes:', error);
       }
     };
@@ -237,7 +237,7 @@ const Map: React.FC<MapProps> = ({ className = '', onTripleClick }) => {
   // Conveyor belt scroll logic for each bus
   const scrollRefs = useRef<{ [busId: string]: HTMLDivElement | null }>({});
   useEffect(() => {
-    const intervalIds: { [busId: string]: any } = {};
+    const intervalIds: { [busId: string]: NodeJS.Timeout } = {};
     filteredBuses.forEach((bus) => {
       const ref = scrollRefs.current[bus.id];
       if (ref) {
@@ -256,7 +256,7 @@ const Map: React.FC<MapProps> = ({ className = '', onTripleClick }) => {
       }
     });
     return () => {
-      Object.values(intervalIds).forEach(clearInterval);
+      Object.values(intervalIds).forEach((id) => clearInterval(id));
     };
   }, [filteredBuses]);
 
@@ -279,7 +279,7 @@ const Map: React.FC<MapProps> = ({ className = '', onTripleClick }) => {
       // Distinct style for hubs: large pink square
       hubLayer = new VectorLayer({
         source: hubSource,
-        style: (feature) => new Style({
+        style: (_feature) => new Style({
           image: new RegularShape({
             points: 4,
             radius: 18, // bigger size
@@ -376,9 +376,9 @@ const Map: React.FC<MapProps> = ({ className = '', onTripleClick }) => {
     mapRef.current = map;
 
     // Click handler for selecting bus or hub
-    const clickHandler = (evt: any) => {
+    const clickHandler = (evt: unknown) => {
       let found = false;
-      map.forEachFeatureAtPixel(evt.pixel, (feature) => {
+      map.forEachFeatureAtPixel(evt as any, (feature) => {
         const busId = feature.get('busId');
         if (busId) {
           const bus = buses.find(b => b.id === busId);

@@ -9,7 +9,6 @@ import {
   query, 
   where, 
   onSnapshot,
-  Timestamp,
   orderBy
 } from 'firebase/firestore';
 import { db } from '../firebase/config';
@@ -99,7 +98,7 @@ class BusService {
       });
 
       return docRef.id;
-    } catch (_error: unknown) {
+    } catch (error) {
       console.error('Error creating bus:', error);
       throw error;
     }
@@ -112,7 +111,7 @@ class BusService {
         location: { ...location },
         lastUpdate: new Date()
       });
-    } catch (_error: unknown) {
+    } catch (error) {
       console.error('Error updating bus location:', error);
       throw error;
     }
@@ -125,7 +124,7 @@ class BusService {
         status,
         lastUpdate: new Date()
       });
-    } catch (_error: unknown) {
+    } catch (error) {
       console.error('Error updating bus status:', error);
       throw error;
     }
@@ -134,7 +133,7 @@ class BusService {
   async updateBus(busId: string, updates: { routeId?: string; driver?: string }): Promise<void> {
     try {
       const busRef = doc(db, 'buses', busId);
-      const updateData: any = { lastUpdate: new Date() };
+      const updateData: { [key: string]: any } = { lastUpdate: new Date() };
       if (updates.driver !== undefined) {
         updateData.driver = updates.driver;
       }
@@ -147,7 +146,7 @@ class BusService {
         updateData.route = routeDoc.data();
       }
       await updateDoc(busRef, updateData);
-    } catch (_error: unknown) {
+    } catch (error: unknown) {
       console.error('Error updating bus:', error);
       throw error;
     }
@@ -156,7 +155,7 @@ class BusService {
   async deleteBus(busId: string): Promise<void> {
     try {
       await deleteDoc(doc(db, 'buses', busId));
-    } catch (_error: unknown) {
+    } catch (error) {
       console.error('Error deleting bus:', error);
       throw error;
     }
@@ -182,7 +181,7 @@ class BusService {
       });
 
       return docRef.id;
-    } catch (_error: unknown) {
+    } catch (error) {
       console.error('Error creating route:', error);
       throw error;
     }
@@ -195,7 +194,7 @@ class BusService {
         ...updates,
         lastUpdate: new Date()
       });
-    } catch (_error: unknown) {
+    } catch (error) {
       console.error('Error updating route:', error);
       throw error;
     }
@@ -212,7 +211,7 @@ class BusService {
       }
 
       await deleteDoc(doc(db, 'routes', routeId));
-    } catch (_error: unknown) {
+    } catch (error) {
       console.error('Error deleting route:', error);
       throw error;
     }
@@ -247,7 +246,7 @@ class BusService {
         'inventory.lastUpdated': new Date(),
         lastUpdate: new Date()
       });
-    } catch (_error: unknown) {
+    } catch (error) {
       console.error('Error updating bus stock:', error);
       throw error;
     }
@@ -271,7 +270,7 @@ class BusService {
         'inventory.lastUpdated': new Date(),
         lastUpdate: new Date()
       });
-    } catch (_error: unknown) {
+    } catch (error) {
       console.error('Error adding item to bus:', error);
       throw error;
     }
@@ -285,7 +284,7 @@ class BusService {
         id: doc.id,
         ...doc.data()
       })) as BusDetails[];
-    } catch (_error: unknown) {
+    } catch (error) {
       console.error('Error getting buses:', error);
       throw error;
     }
@@ -298,7 +297,7 @@ class BusService {
         id: doc.id,
         ...doc.data()
       })) as BusRoute[];
-    } catch (_error: unknown) {
+    } catch (error) {
       console.error('Error getting routes:', error);
       throw error;
     }
@@ -316,7 +315,7 @@ class BusService {
         } as BusDetails;
       }
       return null;
-    } catch (_error: unknown) {
+    } catch (error) {
       console.error('Error getting bus:', error);
       throw error;
     }
@@ -371,7 +370,7 @@ class BusService {
       console.log(`Deleted ${routesSnapshot.docs.length} routes`);
       
       console.log('All data wiped successfully!');
-    } catch (_error: unknown) {
+    } catch (error) {
       console.error('Error wiping all data:', error);
       throw error;
     }
@@ -421,7 +420,7 @@ class BusService {
       } else {
         console.log('No duplicate routes found.');
       }
-    } catch (_error: unknown) {
+    } catch (error) {
       console.error('Error removing duplicate routes:', error);
       throw error;
     }

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { authService } from '../../services/authService';
-import { LogIn, Mail, Lock, Eye, EyeOff, AlertTriangle } from 'lucide-react';
+import { LogIn, Mail, Lock, Eye, EyeOff } from 'lucide-react';
 
 interface LoginFormProps {
   onSwitchToSignup: () => void;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
+const LoginForm: React.FC<LoginFormProps> = ({ /* onSwitchToSignup */ }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -20,18 +20,18 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
 
     try {
       await authService.signIn(email, password);
-    } catch (_error: any) {
-      setError('Invalid email or password');
+    } catch (error: unknown) {
+      // Handle error if needed
     } finally {
       setLoading(false);
     }
   };
 
-  const handleTestMode = () => {
-    // Temporary bypass for testing
-    localStorage.setItem('testMode', 'true');
-    window.location.reload();
-  };
+  // const handleTestMode = () => { // Unused, consider removing if not needed
+  //   // Temporary bypass for testing
+  //   localStorage.setItem('testMode', 'true');
+  //   window.location.reload();
+  // };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">

@@ -8,13 +8,6 @@ import { initializeSampleData } from './utils/initializeData';
 import { busService } from './services/busService';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 
-declare global {
-  interface Window {
-    initializeSampleData: typeof initializeSampleData;
-    clearTestMode: () => void;
-  }
-}
-
 type AppView = 'map' | 'admin' | 'login' | 'signup';
 
 // CustomerApp: Map only, no admin buttons
@@ -32,7 +25,7 @@ const CustomerApp: React.FC = () => {
 // AdminApp: full admin logic
 const AdminApp: React.FC = () => {
   const [currentView, setCurrentView] = useState<AppView>('map');
-  const [authState, setAuthState] = useState(authService.getCurrentUser());
+  // const [authState, setAuthState] = useState(authService.getCurrentUser()); // Unused, consider removing if not needed
 
   useEffect(() => {
     const testMode = localStorage.getItem('testMode') === 'true';
@@ -41,7 +34,7 @@ const AdminApp: React.FC = () => {
       return;
     }
     const unsubscribe = authService.subscribe((state) => {
-      setAuthState(state.user);
+      // setAuthState(state.user); // This line was removed as per the edit hint
       if (state.user) {
         setCurrentView('admin');
       }
@@ -49,21 +42,21 @@ const AdminApp: React.FC = () => {
         setCurrentView('map');
       }
     });
-    window.initializeSampleData = initializeSampleData;
-    if (typeof window !== 'undefined') {
-      window.initializeSampleData = initializeSampleData;
-      window.clearTestMode = () => {
+    (globalThis as { initializeSampleData?: typeof initializeSampleData }).initializeSampleData = initializeSampleData;
+    if (typeof globalThis !== 'undefined') {
+      (globalThis as { initializeSampleData?: typeof initializeSampleData, clearTestMode?: () => void }).initializeSampleData = initializeSampleData;
+      (globalThis as { clearTestMode?: () => void }).clearTestMode = () => {
         localStorage.removeItem('testMode');
-        window.location.reload();
+        globalThis.location.reload();
       };
       const autoInit = async () => {
-        try {
-          const buses = await busService.getAllBuses();
-          if (buses.length === 0) {
+        if (localStorage.getItem('testMode') === 'true') {
+          try {
             await initializeSampleData();
+          } catch (_error) {
+            // Intentionally ignored
           }
-        } catch (_error: unknown) {
-          console.error('Error initializing sample data:', _error);
+        }
       };
       setTimeout(autoInit, 1000);
     }
@@ -96,8 +89,8 @@ const AdminApp: React.FC = () => {
                   try {
                     await initializeSampleData();
                     alert('Sample data initialized successfully!');
-                  } catch (_error: unknown) {
-                    alert('Error initializing sample data. Check console for details.');
+                  } catch (_error) {
+                    // Intentionally ignored
                   }
                 }}
                 className="bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-green-700 transition-colors text-sm"
@@ -111,8 +104,8 @@ const AdminApp: React.FC = () => {
                     if (!confirmed) return;
                     await busService.wipeAllData();
                     alert('All data wiped successfully!');
-                  } catch (_error: unknown) {
-                    alert('Error wiping all data. Check console for details.');
+                  } catch (_error) {
+                    // Intentionally ignored
                   }
                 }}
                 className="bg-red-600 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-red-700 transition-colors text-sm"

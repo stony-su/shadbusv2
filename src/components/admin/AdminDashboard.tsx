@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { authService } from '../../services/authService';
 import { busService } from '../../services/busService';
-import { LogOut, Settings, Truck, Map, Package, Users, Database } from 'lucide-react';
+import { LogOut, Truck, Map, Package, Database } from 'lucide-react';
 import BusManagement from './BusManagement';
 import RouteManagement from './RouteManagement';
 import StockManagement from './StockManagement';
@@ -25,7 +25,7 @@ const AdminDashboard: React.FC = () => {
       // Clear test mode if it exists
       localStorage.removeItem('testMode');
       await authService.signOut();
-    } catch (_error: unknown) {
+    } catch (error) {
       console.error('Error signing out:', error);
     }
   };
@@ -81,8 +81,8 @@ const AdminDashboard: React.FC = () => {
       try {
         await busService.removeDuplicateRoutes();
         setMessage('Duplicate routes removed successfully!');
-      } catch (error: any) {
-        setMessage(`Error: ${error.message}`);
+      } catch (error: unknown) {
+        setMessage(`Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
       } finally {
         setLoading(false);
       }
@@ -99,8 +99,8 @@ const AdminDashboard: React.FC = () => {
       try {
         await busService.wipeAllData();
         setMessage('All data wiped successfully!');
-      } catch (error: any) {
-        setMessage(`Error: ${error.message}`);
+      } catch (error: unknown) {
+        setMessage(`Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
       } finally {
         setLoading(false);
       }

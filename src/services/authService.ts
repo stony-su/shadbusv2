@@ -3,7 +3,6 @@ import {
   signInWithEmailAndPassword, 
   signOut, 
   onAuthStateChanged, 
-  User,
   updateProfile
 } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
@@ -84,8 +83,8 @@ class AuthService {
       });
 
       return adminUser;
-    } catch (error: any) {
-      this.authState.error = error.message;
+    } catch (error: unknown) {
+      this.authState.error = (error as Error).message;
       this.notifyListeners();
       throw error;
     }
@@ -112,8 +111,8 @@ class AuthService {
       };
 
       return adminUser;
-    } catch (error: any) {
-      this.authState.error = error.message;
+    } catch (error: unknown) {
+      this.authState.error = (error as Error).message;
       this.notifyListeners();
       throw error;
     }
@@ -126,8 +125,8 @@ class AuthService {
       this.authState.user = null;
       this.authState.error = null;
       this.notifyListeners();
-    } catch (error: any) {
-      this.authState.error = error.message;
+    } catch (error: unknown) {
+      this.authState.error = (error as Error).message;
       this.notifyListeners();
       throw error;
     }

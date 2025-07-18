@@ -1,4 +1,5 @@
 import { busService } from '../services/busService';
+import { FoodItem } from '../types';
 
 // Helper to generate 3 unique food items for a bus
 const categories = ['fruits', 'vegetables', 'dairy', 'meat', 'grains', 'cultural'];
@@ -7,7 +8,7 @@ const foodNames = [
   'Kimchi', 'Dim Sum', 'Pho', 'Olive Oil', 'Feta Cheese', 'Hummus', 'Falafel', 'Naan', 'Tandoori Spice', 'Tacos',
   'Pizza', 'Baklava', 'Tomatoes', 'Bananas', 'Mozzarella', 'Dolma', 'Biryani', 'Guacamole', 'Queso', 'Salsa'
 ];
-function generateFoodItemsForBus(busIndex: number): any[] {
+function generateFoodItemsForBus(busIndex: number): FoodItem[] {
   // Use busIndex to ensure uniqueness
   return Array.from({ length: 3 }, (_, i) => {
     const idx = (busIndex * 3 + i) % foodNames.length;
@@ -21,7 +22,7 @@ function generateFoodItemsForBus(busIndex: number): any[] {
       price: parseFloat((2.99 + ((busIndex + 1) * (i + 1)) % 20 + i).toFixed(2)),
       inStock: true
     };
-  });
+  }) as FoodItem[];
 }
 
 export const initializeSampleData = async () => {
@@ -175,7 +176,7 @@ export const initializeSampleData = async () => {
     }
 
     console.log('Sample data initialization completed successfully!');
-  } catch (_error: unknown) {
+  } catch (error) {
     console.error('Error initializing sample data:', error);
     throw error;
   }

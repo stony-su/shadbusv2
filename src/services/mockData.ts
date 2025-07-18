@@ -4,7 +4,7 @@ import { BusDetails, BusLocation, BusRoute, FoodItem, BusInventory, RoutePath, H
 const CALGARY_CENTER = { lat: 51.0447, lng: -114.0719 };
 
 // Sample cultural foods
-const culturalFoods = {
+const _culturalFoods = {
   middleEastern: ['Hummus', 'Falafel', 'Shawarma', 'Baklava', 'Tabouleh'],
   asian: ['Kimchi', 'Sushi', 'Dim Sum', 'Pho', 'Pad Thai'],
   mediterranean: ['Olive Oil', 'Feta Cheese', 'Tzatziki', 'Dolma', 'Baklava'],
