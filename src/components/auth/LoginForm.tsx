@@ -20,8 +20,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
 
     try {
       await authService.signIn(email, password);
-    } catch (error: any) {
-      setError(error.message);
+    } catch (_error: any) {
     } finally {
       setLoading(false);
     }
