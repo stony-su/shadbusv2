@@ -6,7 +6,7 @@ interface LoginFormProps {
   onSwitchToSignup: () => void;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ /* onSwitchToSignup */ }) => {
+const LoginForm: React.FC<LoginFormProps> = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
