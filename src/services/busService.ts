@@ -133,7 +133,7 @@ class BusService {
   async updateBus(busId: string, updates: { routeId?: string; driver?: string }): Promise<void> {
     try {
       const busRef = doc(db, 'buses', busId);
-      const updateData: { [key: string]: any } = { lastUpdate: new Date() };
+      const updateData: Partial<{ lastUpdate: Date; driver: string; route: BusRoute; }> = { lastUpdate: new Date() };
       if (updates.driver !== undefined) {
         updateData.driver = updates.driver;
       }
