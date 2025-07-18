@@ -25,7 +25,7 @@ const CustomerApp: React.FC = () => {
 // AdminApp: full admin logic
 const AdminApp: React.FC = () => {
   const [currentView, setCurrentView] = useState<AppView>('map');
-  // const [authState, setAuthState] = useState(authService.getCurrentUser()); // Unused, consider removing if not needed
+  const [authState, setAuthState] = useState(authService.getCurrentUser());
 
   useEffect(() => {
     const testMode = localStorage.getItem('testMode') === 'true';
@@ -34,7 +34,7 @@ const AdminApp: React.FC = () => {
       return;
     }
     const unsubscribe = authService.subscribe((state) => {
-      // setAuthState(state.user); // This line was removed as per the edit hint
+      setAuthState(state.user);
       if (state.user) {
         setCurrentView('admin');
       }
@@ -42,21 +42,20 @@ const AdminApp: React.FC = () => {
         setCurrentView('map');
       }
     });
-    (globalThis as { initializeSampleData?: typeof initializeSampleData }).initializeSampleData = initializeSampleData;
-    if (typeof globalThis !== 'undefined') {
-      (globalThis as { initializeSampleData?: typeof initializeSampleData, clearTestMode?: () => void }).initializeSampleData = initializeSampleData;
-      (globalThis as { clearTestMode?: () => void }).clearTestMode = () => {
+    (window as any).initializeSampleData = initializeSampleData;
+    if (typeof window !== 'undefined') {
+      (window as any).initializeSampleData = initializeSampleData;
+      (window as any).clearTestMode = () => {
         localStorage.removeItem('testMode');
-        globalThis.location.reload();
+        window.location.reload();
       };
       const autoInit = async () => {
-        if (localStorage.getItem('testMode') === 'true') {
-          try {
+        try {
+          const buses = await busService.getAllBuses();
+          if (buses.length === 0) {
             await initializeSampleData();
-          } catch (_error) {
-            // Intentionally ignored
           }
-        }
+        } catch (error) {}
       };
       setTimeout(autoInit, 1000);
     }
@@ -89,8 +88,8 @@ const AdminApp: React.FC = () => {
                   try {
                     await initializeSampleData();
                     alert('Sample data initialized successfully!');
-                  } catch (_error) {
-                    // Intentionally ignored
+                  } catch (error) {
+                    alert('Error initializing sample data. Check console for details.');
                   }
                 }}
                 className="bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-green-700 transition-colors text-sm"
@@ -100,12 +99,12 @@ const AdminApp: React.FC = () => {
               <button
                 onClick={async () => {
                   try {
-                    const confirmed = globalThis.confirm('Are you sure you want to wipe ALL data? This action cannot be undone.');
+                    const confirmed = window.confirm('Are you sure you want to wipe ALL data? This action cannot be undone.');
                     if (!confirmed) return;
                     await busService.wipeAllData();
                     alert('All data wiped successfully!');
-                  } catch (_error) {
-                    // Intentionally ignored
+                  } catch (error) {
+                    alert('Error wiping all data. Check console for details.');
                   }
                 }}
                 className="bg-red-600 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-red-700 transition-colors text-sm"

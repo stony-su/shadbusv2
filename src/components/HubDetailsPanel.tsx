@@ -1,5 +1,5 @@
 import React from 'react';
-import { Hub, FoodItem as _FoodItem } from '../types';
+import { Hub, FoodItem } from '../types';
 import { X, MapPin, Clock, Package, Store } from 'lucide-react';
 
 interface HubDetailsPanelProps {

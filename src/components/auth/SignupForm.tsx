@@ -35,8 +35,8 @@ const SignupForm: React.FC<SignupFormProps> = ({ onSwitchToLogin }) => {
 
     try {
       await authService.signUp(email, password, displayName);
-    } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : 'An unknown error occurred');
+    } catch (error: any) {
+      setError(error.message);
     } finally {
       setLoading(false);
     }

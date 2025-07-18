@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { busService, CreateBusRequest } from '../../services/busService';
 import { BusDetails, BusRoute } from '../../types';
-import { Plus, Trash2, Edit } from 'lucide-react';
+import { Plus, Truck, MapPin, User, Trash2, Edit } from 'lucide-react';
 
 const BusManagement: React.FC = () => {
   const [buses, setBuses] = useState<BusDetails[]>([]);
@@ -31,8 +31,8 @@ const BusManagement: React.FC = () => {
       ]);
       setBuses(busesData);
       setRoutes(routesData);
-    } catch (error: unknown) {
-      setError(error as string);
+    } catch (error: any) {
+      setError(error.message);
     } finally {
       setLoading(false);
     }
@@ -56,23 +56,23 @@ const BusManagement: React.FC = () => {
         driver: ''
       });
       await loadData();
-    } catch (error: unknown) {
-      setError(error as string);
+    } catch (error: any) {
+      setError(error.message);
     } finally {
       setLoading(false);
     }
   };
 
   const handleDeleteBus = async (busId: string) => {
-    if (!globalThis.confirm('Are you sure you want to delete this bus?')) {
+    if (!window.confirm('Are you sure you want to delete this bus?')) {
       return;
     }
 
     try {
       await busService.deleteBus(busId);
       await loadData();
-    } catch (error: unknown) {
-      setError(error as string);
+    } catch (error: any) {
+      setError(error.message);
     }
   };
 
@@ -80,8 +80,8 @@ const BusManagement: React.FC = () => {
     try {
       await busService.updateBusStatus(busId, status);
       await loadData();
-    } catch (error: unknown) {
-      setError(error as string);
+    } catch (error: any) {
+      setError(error.message);
     }
   };
 
@@ -259,8 +259,8 @@ const BusManagement: React.FC = () => {
                               await busService.updateBus(bus.id, { routeId: editFormData.routeId, driver: editFormData.driver });
                               setEditingBusId(null);
                               await loadData();
-                            } catch (error: unknown) {
-                              setError(error as string);
+                            } catch (error: any) {
+                              setError(error.message);
                             } finally {
                               setLoading(false);
                             }

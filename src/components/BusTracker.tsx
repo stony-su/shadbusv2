@@ -5,7 +5,7 @@ interface BusTrackerProps {
   buses: BusDetails[];
 }
 
-const BusTracker: React.FC<BusTrackerProps> = ({ buses: _buses }) => {
+const BusTracker: React.FC<BusTrackerProps> = ({ buses }) => {
   // No movement functionality - buses remain stationary
   return null; // This component doesn't render anything
 };

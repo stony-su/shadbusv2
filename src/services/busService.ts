@@ -9,6 +9,7 @@ import {
   query, 
   where, 
   onSnapshot,
+  Timestamp,
   orderBy
 } from 'firebase/firestore';
 import { db } from '../firebase/config';
@@ -133,7 +134,7 @@ class BusService {
   async updateBus(busId: string, updates: { routeId?: string; driver?: string }): Promise<void> {
     try {
       const busRef = doc(db, 'buses', busId);
-      const updateData: { [key: string]: any } = { lastUpdate: new Date() };
+      const updateData: any = { lastUpdate: new Date() };
       if (updates.driver !== undefined) {
         updateData.driver = updates.driver;
       }
@@ -146,7 +147,7 @@ class BusService {
         updateData.route = routeDoc.data();
       }
       await updateDoc(busRef, updateData);
-    } catch (error: unknown) {
+    } catch (error) {
       console.error('Error updating bus:', error);
       throw error;
     }

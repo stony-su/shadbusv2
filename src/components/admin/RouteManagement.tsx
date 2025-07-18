@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { busService, CreateRouteRequest } from '../../services/busService';
 import { BusRoute } from '../../types';
-import { Plus, Map, Trash2, Edit, X } from 'lucide-react';
+import { Plus, Map, Trash2, Edit, Save, X } from 'lucide-react';
 import RouteCreator from './RouteCreator';
 
 const RouteManagement: React.FC = () => {
@@ -34,8 +34,8 @@ const RouteManagement: React.FC = () => {
       setLoading(true);
       const routesData = await busService.getAllRoutes();
       setRoutes(routesData);
-    } catch (error: unknown) {
-      setError(error as string);
+    } catch (error: any) {
+      setError(error.message);
     } finally {
       setLoading(false);
     }
@@ -92,8 +92,8 @@ const RouteManagement: React.FC = () => {
         color: '#3b82f6'
       });
       await loadRoutes();
-    } catch (error: unknown) {
-      setError(error as string);
+    } catch (error: any) {
+      setError(error.message);
     } finally {
       setLoading(false);
     }
@@ -123,8 +123,8 @@ const RouteManagement: React.FC = () => {
         color: '#3b82f6'
       });
       await loadRoutes();
-    } catch (error: unknown) {
-      setError(error as string);
+    } catch (error: any) {
+      setError(error.message);
     } finally {
       setLoading(false);
     }
@@ -151,15 +151,15 @@ const RouteManagement: React.FC = () => {
   };
 
   const handleDeleteRoute = async (routeId: string) => {
-    if (!globalThis.confirm('Are you sure you want to delete this route?')) {
+    if (!window.confirm('Are you sure you want to delete this route?')) {
       return;
     }
 
     try {
       await busService.deleteRoute(routeId);
       await loadRoutes();
-    } catch (error: unknown) {
-      setError(error as string);
+    } catch (error: any) {
+      setError(error.message);
     }
   };
 
@@ -176,7 +176,7 @@ const RouteManagement: React.FC = () => {
     name: string;
     description: string;
     culturalFocus: string[];
-    path: unknown[];
+    path: any[];
     color: string;
   }) => {
     setLoading(true);
@@ -194,8 +194,8 @@ const RouteManagement: React.FC = () => {
       await busService.createRoute(request);
       setShowRouteCreator(false);
       await loadRoutes();
-    } catch (error: unknown) {
-      setError(error as string);
+    } catch (error: any) {
+      setError(error.message);
     } finally {
       setLoading(false);
     }

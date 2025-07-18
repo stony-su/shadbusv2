@@ -12,7 +12,7 @@ import VectorSource from 'ol/source/Vector';
 import VectorLayer from 'ol/layer/Vector';
 import { Style, Circle as CircleStyle, Fill, Stroke, Text } from 'ol/style';
 import { RoutePath } from '../../types';
-import { Save, X, Trash2, RotateCcw } from 'lucide-react';
+import { Plus, Save, X, Trash2, RotateCcw } from 'lucide-react';
 
 interface RouteCreatorProps {
   onSave: (routeData: {
@@ -105,8 +105,8 @@ const RouteCreator: React.FC<RouteCreatorProps> = ({ onSave, onCancel }) => {
     mapRef.current = map;
 
     // Click handler for placing waypoints
-    const clickHandler = (evt: unknown) => {
-      const coordinate = (evt as any).coordinate;
+    const clickHandler = (evt: any) => {
+      const coordinate = evt.coordinate;
       const [longitude, latitude] = toLonLat(coordinate);
       
       const newWaypoint: RoutePath = {
