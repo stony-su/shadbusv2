@@ -175,7 +175,7 @@ export const initializeSampleData = async () => {
     }
 
     console.log('Sample data initialization completed successfully!');
-  } catch (error) {
+  } catch (_error: unknown) {
     console.error('Error initializing sample data:', error);
     throw error;
   }

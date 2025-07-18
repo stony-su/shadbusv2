@@ -100,7 +100,7 @@ const Map: React.FC<MapProps> = ({ className = '', onTripleClick }) => {
         const routesData = await busService.getAllRoutes();
         console.log('Routes loaded:', routesData);
         setRoutes(routesData);
-      } catch (error) {
+      } catch (_error: unknown) {
         console.error('Error loading routes:', error);
       }
     };

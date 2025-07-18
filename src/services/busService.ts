@@ -99,7 +99,7 @@ class BusService {
       });
 
       return docRef.id;
-    } catch (error) {
+    } catch (_error: unknown) {
       console.error('Error creating bus:', error);
       throw error;
     }
@@ -112,7 +112,7 @@ class BusService {
         location: { ...location },
         lastUpdate: new Date()
       });
-    } catch (error) {
+    } catch (_error: unknown) {
       console.error('Error updating bus location:', error);
       throw error;
     }
@@ -125,7 +125,7 @@ class BusService {
         status,
         lastUpdate: new Date()
       });
-    } catch (error) {
+    } catch (_error: unknown) {
       console.error('Error updating bus status:', error);
       throw error;
     }
@@ -147,7 +147,7 @@ class BusService {
         updateData.route = routeDoc.data();
       }
       await updateDoc(busRef, updateData);
-    } catch (error) {
+    } catch (_error: unknown) {
       console.error('Error updating bus:', error);
       throw error;
     }
@@ -156,7 +156,7 @@ class BusService {
   async deleteBus(busId: string): Promise<void> {
     try {
       await deleteDoc(doc(db, 'buses', busId));
-    } catch (error) {
+    } catch (_error: unknown) {
       console.error('Error deleting bus:', error);
       throw error;
     }
@@ -182,7 +182,7 @@ class BusService {
       });
 
       return docRef.id;
-    } catch (error) {
+    } catch (_error: unknown) {
       console.error('Error creating route:', error);
       throw error;
     }
@@ -195,7 +195,7 @@ class BusService {
         ...updates,
         lastUpdate: new Date()
       });
-    } catch (error) {
+    } catch (_error: unknown) {
       console.error('Error updating route:', error);
       throw error;
     }
@@ -212,7 +212,7 @@ class BusService {
       }
 
       await deleteDoc(doc(db, 'routes', routeId));
-    } catch (error) {
+    } catch (_error: unknown) {
       console.error('Error deleting route:', error);
       throw error;
     }
@@ -247,7 +247,7 @@ class BusService {
         'inventory.lastUpdated': new Date(),
         lastUpdate: new Date()
       });
-    } catch (error) {
+    } catch (_error: unknown) {
       console.error('Error updating bus stock:', error);
       throw error;
     }
@@ -271,7 +271,7 @@ class BusService {
         'inventory.lastUpdated': new Date(),
         lastUpdate: new Date()
       });
-    } catch (error) {
+    } catch (_error: unknown) {
       console.error('Error adding item to bus:', error);
       throw error;
     }
@@ -285,7 +285,7 @@ class BusService {
         id: doc.id,
         ...doc.data()
       })) as BusDetails[];
-    } catch (error) {
+    } catch (_error: unknown) {
       console.error('Error getting buses:', error);
       throw error;
     }
@@ -298,7 +298,7 @@ class BusService {
         id: doc.id,
         ...doc.data()
       })) as BusRoute[];
-    } catch (error) {
+    } catch (_error: unknown) {
       console.error('Error getting routes:', error);
       throw error;
     }
@@ -316,7 +316,7 @@ class BusService {
         } as BusDetails;
       }
       return null;
-    } catch (error) {
+    } catch (_error: unknown) {
       console.error('Error getting bus:', error);
       throw error;
     }
@@ -371,7 +371,7 @@ class BusService {
       console.log(`Deleted ${routesSnapshot.docs.length} routes`);
       
       console.log('All data wiped successfully!');
-    } catch (error) {
+    } catch (_error: unknown) {
       console.error('Error wiping all data:', error);
       throw error;
     }
@@ -421,7 +421,7 @@ class BusService {
       } else {
         console.log('No duplicate routes found.');
       }
-    } catch (error) {
+    } catch (_error: unknown) {
       console.error('Error removing duplicate routes:', error);
       throw error;
     }

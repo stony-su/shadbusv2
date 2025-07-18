@@ -55,7 +55,7 @@ const AdminApp: React.FC = () => {
           if (buses.length === 0) {
             await initializeSampleData();
           }
-        } catch (error) {}
+        } catch (_error: unknown) {}
       };
       setTimeout(autoInit, 1000);
     }
@@ -88,7 +88,7 @@ const AdminApp: React.FC = () => {
                   try {
                     await initializeSampleData();
                     alert('Sample data initialized successfully!');
-                  } catch (error) {
+                  } catch (_error: unknown) {
                     alert('Error initializing sample data. Check console for details.');
                   }
                 }}
@@ -103,7 +103,7 @@ const AdminApp: React.FC = () => {
                     if (!confirmed) return;
                     await busService.wipeAllData();
                     alert('All data wiped successfully!');
-                  } catch (error) {
+                  } catch (_error: unknown) {
                     alert('Error wiping all data. Check console for details.');
                   }
                 }}

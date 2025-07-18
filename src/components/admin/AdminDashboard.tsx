@@ -25,7 +25,7 @@ const AdminDashboard: React.FC = () => {
       // Clear test mode if it exists
       localStorage.removeItem('testMode');
       await authService.signOut();
-    } catch (error) {
+    } catch (_error: unknown) {
       console.error('Error signing out:', error);
     }
   };
